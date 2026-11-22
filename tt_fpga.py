@@ -283,7 +283,10 @@ class TTFPGA:
                 os.path.join(SCRIPT_DIR, "fpga/SB_GB_IO.v"),
             ])
             yosys_flags += " -m slang"
-            read_verilog_cmd = f"read_slang --keep-hierarchy -top tt_fpga_top {top_module_filename} {fpga_blackbox_files} {source_list}"
+            slang_args = ["-top tt_fpga_top"]
+            if self.project.info.slang_arguments:
+                slang_args += self.project.info.slang_arguments
+            read_verilog_cmd = f"read_slang {' '.join(slang_args)} {top_module_filename} {fpga_blackbox_files} {source_list}"
         else:
             read_verilog_cmd = f"read_verilog -sv {top_module_filename} {source_list}"
 

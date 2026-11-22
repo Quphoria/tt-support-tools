@@ -503,6 +503,8 @@ class Project:
             "VDD_PIN": "VPWR",
             "GND_PIN": "VGND",
             "RT_MAX_LAYER": self.tech.project_top_metal_layer,
+            "USE_SLANG": self.info.use_slang,
+            "SLANG_ARGUMENTS": self.info.slang_arguments,
         }
         config.update(self.tech.librelane_config)
         write_config(config, os.path.join(self.src_dir, "user_config"), ("json",))

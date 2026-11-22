@@ -201,6 +201,7 @@ class ProjectInfo:
         self.discord: Optional[str] = project_section.get("discord")
         self.doc_link: Optional[str] = project_section.get("doc_link")
         self.use_slang: bool = project_section.get("use_slang", False)
+        self.slang_arguments: Optional[List[str]] = project_section.get("slang_arguments")
 
         # Raise all errors if any were collected
         if errors:

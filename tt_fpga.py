@@ -281,6 +281,7 @@ class TTFPGA:
             # slang requires blackbox files for FPGA cells
             fpga_blackbox_files = " ".join([
                 os.path.join(SCRIPT_DIR, "fpga/SB_IO.v"),
+                os.path.join(SCRIPT_DIR, "fpga/SB_GB_IO.v"),
             ])
             yosys_flags += " -m slang"
             read_verilog_cmd = f"read_slang --keep-hierarchy -top tt_fpga_top {top_module_filename} {fpga_blackbox_files} {source_list}"

@@ -10,9 +10,25 @@ module tt_fpga_top (
     input  wire       clk,
     input  wire       rst_n
 );
+  wire       clk_int;
   wire [7:0] uio_in;
   wire [7:0] uio_out;
   wire [7:0] uio_oe;
+
+  // Use global-buffer capable IO for clk to improve latency
+  SB_GB_IO clk_pin (
+      .PACKAGE_PIN          (clk),
+      .LATCH_INPUT_VALUE    (1'b0),
+      .CLOCK_ENABLE         (1'b1),
+      .INPUT_CLK            (clk_int), // Use clk_int as it is shared with neighbouring IO's
+      .OUTPUT_CLK           (clk_int), // Use clk_int as it is shared with neighbouring IO's
+      .OUTPUT_ENABLE        (1'b0),
+      .D_OUT_0              (1'b0),
+      .D_OUT_1              (1'b0),
+      .D_IN_0               (),
+      .D_IN_1               ()
+      .GLOBAL_BUFFER_OUTPUT (clk_int)
+  );
 
   SB_IO #(
       .PIN_TYPE(6'b1010_01)
@@ -20,8 +36,8 @@ module tt_fpga_top (
       .PACKAGE_PIN       (uio),
       .LATCH_INPUT_VALUE (1'b0),
       .CLOCK_ENABLE      (1'b1),
-      .INPUT_CLK         (clk),
-      .OUTPUT_CLK        (clk),
+      .INPUT_CLK         (clk_int), // Use clk_int as it is shared with neighbouring IO's
+      .OUTPUT_CLK        (clk_int), // Use clk_int as it is shared with neighbouring IO's
       .OUTPUT_ENABLE     (uio_oe),
       .D_OUT_0           (uio_out),
       .D_OUT_1           (1'b0),
@@ -36,7 +52,7 @@ module tt_fpga_top (
       .uio_out(uio_out),
       .uio_oe(uio_oe),
       .ena(1'b1),
-      .clk(clk),
+      .clk(clk_int),
       .rst_n(rst_n)
   );
 

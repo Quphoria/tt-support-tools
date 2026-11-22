@@ -112,6 +112,12 @@ def getParser():
         help="Name of the top module (default from info.yaml)",
     )
 
+    harden.add_argument(
+        "--use-slang",
+        action="store_true",
+        help="Use yosys-slang plugin for reading in Yosys source files",
+    )
+
     # ----------------------
     # Subcommand: configuration
     # ----------------------
@@ -268,7 +274,15 @@ class TTFPGA:
         source_list = " ".join(sources)
 
         top_module_filename = os.path.join(self.source_dir, "_tt_fpga_top.v")
-        yosys_cmd = f"yosys -l {build_dir}/01-synth.log -DSYNTH -p 'read_verilog -sv {top_module_filename} {source_list}; synth_ice40 -top tt_fpga_top -json {build_dir}/{base_name}.json'"
+
+        yosys_flags = f"-l {build_dir}/01-synth.log -DSYNTH -DFPGA"
+        if args.use_slang:
+            yosys_flags += " -m slang"
+            read_verilog_cmd = f"read_slang --keep-hierarchy -top {top_module_filename} {source_list}"
+        else:
+            read_verilog_cmd = f"read_verilog -sv {top_module_filename} {source_list}"
+
+        yosys_cmd = f"yosys {yosys_flags} -p '{read_verilog_cmd}; synth_ice40 -top tt_fpga_top -json {build_dir}/{base_name}.json'"
         logging.debug(yosys_cmd)
         p = subprocess.run(yosys_cmd, shell=True)
         if p.returncode != 0:

@@ -112,12 +112,6 @@ def getParser():
         help="Name of the top module (default from info.yaml)",
     )
 
-    harden.add_argument(
-        "--use-slang",
-        action="store_true",
-        help="Use yosys-slang plugin for reading in Yosys source files",
-    )
-
     # ----------------------
     # Subcommand: configuration
     # ----------------------
@@ -276,7 +270,7 @@ class TTFPGA:
         top_module_filename = os.path.join(self.source_dir, "_tt_fpga_top.v")
 
         yosys_flags = f"-l {build_dir}/01-synth.log -DSYNTH -DFPGA"
-        if args.use_slang or self.project.info.use_slang:
+        if self.project.info.use_slang:
             # slang requires blackbox files for FPGA cells
             fpga_blackbox_files = " ".join([
                 os.path.join(SCRIPT_DIR, "fpga/SB_IO.v"),

@@ -26,7 +26,7 @@ module tt_fpga_top (
       .D_OUT_0              (1'b0),
       .D_OUT_1              (1'b0),
       .D_IN_0               (),
-      .D_IN_1               ()
+      .D_IN_1               (),
       .GLOBAL_BUFFER_OUTPUT (clk_int)
   );
 

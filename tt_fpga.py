@@ -278,8 +278,12 @@ class TTFPGA:
         yosys_flags = f"-l {build_dir}/01-synth.log -DSYNTH -DFPGA"
         print(f"USE SLANG: {self.project.info.use_slang}")
         if args.use_slang or self.project.info.use_slang:
+            # slang requires blackbox files for FPGA cells
+            fpga_blackbox_files = " ".join([
+                os.path.join(SCRIPT_DIR, "fpga/SB_IO.v"),
+            ])
             yosys_flags += " -m slang"
-            read_verilog_cmd = f"read_slang --keep-hierarchy -top tt_fpga_top {top_module_filename} {source_list}"
+            read_verilog_cmd = f"read_slang --keep-hierarchy -top tt_fpga_top {top_module_filename} {fpga_blackbox_files} {source_list}"
         else:
             read_verilog_cmd = f"read_verilog -sv {top_module_filename} {source_list}"
 

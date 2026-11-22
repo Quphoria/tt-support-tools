@@ -200,8 +200,21 @@ class ProjectInfo:
         # Optional fields
         self.discord: Optional[str] = project_section.get("discord")
         self.doc_link: Optional[str] = project_section.get("doc_link")
-        self.use_slang: bool = project_section.get("use_slang", False)
-        self.slang_arguments: Optional[List[str]] = project_section.get("slang_arguments")
+
+        use_slang = project_section.get("use_slang", False)
+        if not isinstance(use_slang, bool):
+            errors.append(
+                "Invalid value for 'use_slang' in 'project' section, must be a boolean"
+            )
+        else:
+            self.use_slang: bool = use_slang
+        slang_arguments = project_section.get("slang_arguments")
+        if slang_arguments is not None or not isinstance(slang_arguments, list) or any(not isinstance(v, str) for v in slang_arguments):
+            errors.append(
+                "Invalid value for 'slang_arguments' in 'project' section, must be a list of strings"
+            )
+        else:
+            self.slang_arguments: Optional[List[str]] = slang_arguments
 
         # Raise all errors if any were collected
         if errors:

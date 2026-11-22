@@ -276,7 +276,6 @@ class TTFPGA:
         top_module_filename = os.path.join(self.source_dir, "_tt_fpga_top.v")
 
         yosys_flags = f"-l {build_dir}/01-synth.log -DSYNTH -DFPGA"
-        print(f"USE SLANG: {self.project.info.use_slang}")
         if args.use_slang or self.project.info.use_slang:
             # slang requires blackbox files for FPGA cells
             fpga_blackbox_files = " ".join([

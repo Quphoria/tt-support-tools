@@ -208,6 +208,7 @@ class ProjectInfo:
             )
         else:
             self.use_slang: bool = use_slang
+
         slang_arguments = project_section.get("slang_arguments")
         if slang_arguments is not None or not isinstance(slang_arguments, list) or any(not isinstance(v, str) for v in slang_arguments):
             errors.append(

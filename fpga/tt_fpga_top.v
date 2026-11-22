@@ -17,10 +17,16 @@ module tt_fpga_top (
   SB_IO #(
       .PIN_TYPE(6'b1010_01)
   ) uio_pin[7:0] (
-      .PACKAGE_PIN(uio),
-      .OUTPUT_ENABLE(uio_oe),
-      .D_OUT_0(uio_out),
-      .D_IN_0(uio_in),
+      .PACKAGE_PIN       (uio),
+      .LATCH_INPUT_VALUE (1'b0),
+      .CLOCK_ENABLE      (1'b1),
+      .INPUT_CLK         (clk),
+      .OUTPUT_CLK        (clk),
+      .OUTPUT_ENABLE     (uio_oe),
+      .D_OUT_0           (uio_out),
+      .D_OUT_1           (1'b0),
+      .D_IN_0            (uio_in),
+      .D_IN_1            ()
   );
 
   __tt_um_placeholder user_project (

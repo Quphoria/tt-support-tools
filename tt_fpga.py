@@ -279,7 +279,7 @@ class TTFPGA:
         print(f"USE SLANG: {self.project.info.use_slang}")
         if args.use_slang or self.project.info.use_slang:
             yosys_flags += " -m slang"
-            read_verilog_cmd = f"read_slang --keep-hierarchy -top {top_module_filename} {source_list}"
+            read_verilog_cmd = f"read_slang --keep-hierarchy -top tt_fpga_top {top_module_filename} {source_list}"
         else:
             read_verilog_cmd = f"read_verilog -sv {top_module_filename} {source_list}"
 

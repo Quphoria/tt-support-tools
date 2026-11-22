@@ -210,7 +210,7 @@ class ProjectInfo:
             self.use_slang: bool = use_slang
 
         slang_arguments = project_section.get("slang_arguments")
-        if slang_arguments is not None or not isinstance(slang_arguments, list) or any(not isinstance(v, str) for v in slang_arguments):
+        if slang_arguments is not None and (not isinstance(slang_arguments, list) or any(not isinstance(v, str) for v in slang_arguments)):
             errors.append(
                 "Invalid value for 'slang_arguments' in 'project' section, must be a list of strings"
             )
